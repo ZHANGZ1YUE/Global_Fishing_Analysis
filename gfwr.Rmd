@@ -291,7 +291,7 @@ plot.
 
 ```{r}
 #Save the history into victory_track
-victory_track <- get_event(event_type='fishing',
+victory_fishing_track <- get_event(event_type='fishing',
           vessel = "1428722dc-cb5c-7377-44ab-f0777c8b71fb",
           start_date = "2021-01-01",
           end_date = "2021-12-31",
@@ -307,7 +307,7 @@ v_map <- get_stamenmap(bbox = area, zoom = 7)
 
 #Plot the coordinates on the map
 v_final_map <- ggmap(v_map) + 
-    geom_point(data = victory_track, aes(x = lon, y = lat)) + # Add coordinate data
+    geom_point(data = victory_fishing_track, aes(x = lon, y = lat)) + # Add coordinate data
     theme_bw() + # Change the plot theme
     ggtitle("Track of Victory fishing location in 2021") + # Give the plot a title
     xlab("Longitude") + # Change x axis title
@@ -315,7 +315,40 @@ v_final_map <- ggmap(v_map) +
 ggplotly()
 ```
 
+
 ### Example 2
+
+```{r}
+#Save the history into victory_track
+victory_port_track <- get_event(event_type='port_visit',
+          vessel = "1428722dc-cb5c-7377-44ab-f0777c8b71fb",
+          confidences = 4,
+          start_date = "2021-01-01",
+          end_date = "2021-12-31",
+          key = key
+)
+
+#Draw a map with this area
+area <- c(left = -100,
+          right = -88,
+          bottom = 25,
+          top = 32)
+v_map <- get_stamenmap(bbox = area, zoom = 7)
+
+#Plot the coordinates on the map
+v_final_map <- ggmap(v_map) + 
+    geom_point(data = victory_port_track, aes(x = lon, y = lat)) + # Add coordinate data
+    theme_bw() + # Change the plot theme
+    ggtitle("Track of Victory fishing location in 2021") + # Give the plot a title
+    xlab("Longitude") + # Change x axis title
+    ylab("Latitude") # Change y axis title
+ggplotly()
+```
+
+
+
+
+### Example 3
 
 Get vessels information for those appearing in a EEZ region. Plot this
 location and see where vessels appeared in this region.
@@ -350,9 +383,13 @@ raster_final_map <- ggmap(r_map) +
 ggplotly()
 ```
 
+### Example 4
 
-### Example 3
-For this region "CIV", we would like to see where these vessels come from. With `civ_raster`, which is the raster for CIV we previously obtained, we can easily group the data by the `Flag` category. And then plot the flag distribution with plotly.
+For this region "CIV", we would like to see where these vessels come
+from. With `civ_raster`, which is the raster for CIV we previously
+obtained, we can easily group the data by the `Flag` category. And then
+plot the flag distribution with plotly.
+
 ```{r}
 # Summarize the data to get the flag distribution using previous raster for CIV
 flag_summary <- civ_raster %>%
@@ -370,9 +407,11 @@ plot_ly(flag_summary,
              insidetextorientation = 'radial')
 ```
 
+### Example 5
 
-### Example 4
-Similar with previous example, we can see the gear distribution for vessels in CIV. 
+Similar with previous example, we can see the gear distribution for
+vessels in CIV.
+
 ```{r}
 # Summarize the data to get the Gear distribution
 gear_summary <- civ_raster %>%
@@ -386,10 +425,6 @@ plot_ly(gear_summary,
              textposition = 'inside',
              textinfo = 'label+percent',
              insidetextorientation = 'radial')
-
-```
-
-```{r}
 
 ```
 
