@@ -2,7 +2,7 @@
 title: "Use Global Fishing Watch API to collect and use fishing data"
 author: "Christophe Bontemps, Ziyue Zhang, GFW Documentation"
 date: "2023-05-15"
-output: pdf_document
+output: html_document
 editor_options: 
   markdown: 
     wrap: 72
@@ -10,6 +10,8 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+
 ```
 
 ## Initialization
