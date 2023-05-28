@@ -377,7 +377,7 @@ get_region_id(region_name = 'Korea', region_source = 'eez', key = key)
 kr_raster <- get_raster(spatial_resolution = 'low',
            temporal_resolution = 'yearly',
            group_by = 'flagAndGearType',
-           date_range = '2021-07-01,2021-07-15',
+           date_range = '2021-05-01,2021-07-15',
            region = 21796,
            region_source = 'eez',
            key = key)
