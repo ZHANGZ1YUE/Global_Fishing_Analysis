@@ -228,7 +228,7 @@ Example: Use `get_region_id` function to get EEZ code of Cote d'Ivoire.
 And then get the raster of this eez
 
 ```{r}
-code_eez <- get_region_id(region_name = 'kr', region_source = 'eez', key = key)
+code_eez <- get_region_id(region_name = 'CIV', region_source = 'eez', key = key)
 
 get_raster(spatial_resolution = 'low',
            temporal_resolution = 'yearly',
@@ -433,7 +433,7 @@ r_map <- get_stamenmap(bbox = area, zoom = 7)
 raster_final_map <- ggmap(r_map) + 
     geom_point(data = kr_raster, aes(x = Lon, y = Lat)) + # Add coordinate data
     theme_bw() + # Change the plot theme
-    ggtitle("EEZ Joint regime area Japan / Korea") + # Give the plot a title
+    ggtitle("EEZ visit record in 2021 May to Jul") + # Give the plot a title
     xlab("Longitude") + # Change x axis title
     ylab("Latitude") # Change y axis title
 ggplotly()
@@ -484,12 +484,36 @@ plot_ly(gear_summary,
 
 ```
 
+
 TODO: For a EEZ, number of vessel/fishing event w.r.t. months.
 We can see how seasons affect fishing in korea/japan region
+### Example 7
 ```{r}
+kr_raster_monthly <- get_raster(spatial_resolution = 'low',
+           temporal_resolution = 'monthly',
+           group_by = 'flagAndGearType',
+           date_range = '2021-01-01,2021-12-30',
+           region = 21796,
+           region_source = 'eez',
+           key = key)
 
+kr_raster_monthly$Time <- as.Date(paste(kr_raster_monthly$`Time Range`,"01", sep="-"), "%Y-%m-%d")   #The 01 means we regard the date for all appearance in a month as the first day of the month
+
+# Group by 'Time' and count the number of ships
+kr_raster_count <- kr_raster_monthly %>%
+                    dplyr::group_by(`Time`) %>%
+                    dplyr::summarise(Count = n())
+
+# Generate the plot
+ship_permonth<- ggplot(kr_raster_count, aes(x=`Time`, y=Count)) +
+  geom_col(fill = 'steelblue') +
+  xlab("Time Range (Year-Month)") +
+  ylab("Number of Ships in  2021 in this EEZ") +
+  ggtitle("Number of Ships per Month") +
+  theme_minimal()
+ggplotly()
 ```
 
-```{r}
+The 01 means we regard the date for all appearance in a month as the first day of the month(because we are interested in monthly data. If you want to see daily data, you can modify `temporal_resolution = 'monthly'` and change `monthly` to `daily`)
 
-```
+
