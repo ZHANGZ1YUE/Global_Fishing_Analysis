@@ -358,10 +358,50 @@ v_final_map <- ggmap(v_map) +
 ggplotly()
 ```
 
-
-
-
 ### Example 3
+In the previous example, our target vessel `Yamada` tends to stay in the same port for all the time. Let's look at another example in a vessel in the America named `Victory`.
+
+```{r}
+# Get fishing track
+victory_fishing_track <- get_event(event_type='fishing',
+          vessel = "1428722dc-cb5c-7377-44ab-f0777c8b71fb",
+          start_date = "2021-01-01",
+          end_date = "2021-12-31",
+          key = key
+)
+
+# Get port visit track
+victory_port_track <- get_event(event_type='port_visit',
+          vessel = "1428722dc-cb5c-7377-44ab-f0777c8b71fb",
+          confidences = 4,
+          start_date = "2021-01-01",
+          end_date = "2021-12-31",
+          key = key
+)
+
+area <- c(left = -100,
+          right = -88,
+          bottom = 25,
+          top = 32)
+
+v_map <- get_stamenmap(bbox = area, zoom = 7)
+
+#Plot the coordinates on the map
+v_final_map <- ggmap(v_map) + 
+    geom_point(data = victory_fishing_track, aes(x = lon, y = lat), colour = "black") + # Add fishing location data
+    geom_point(data = victory_port_track, aes(x = lon, y = lat), colour = "red") + # Add port visit data
+    theme_bw() + # Change the plot theme
+    ggtitle("Track of Victory in 2021 (Red is port visit and Black is fishing)") + # Give the plot a title
+    xlab("Longitude") + # Change x axis title
+    ylab("Latitude") # Change y axis title
+ggplotly()
+```
+
+We can see how `Victory` travels while fishing in this region! Also, it should be noticed that there is a red dot in the middle of sea, indicating that there might be errors in the data for port visit.
+
+
+
+### Example 4
 
 Get vessels information for those appearing in a EEZ region. Plot this
 location and see where vessels appeared in this region.
@@ -393,13 +433,13 @@ r_map <- get_stamenmap(bbox = area, zoom = 7)
 raster_final_map <- ggmap(r_map) + 
     geom_point(data = kr_raster, aes(x = Lon, y = Lat)) + # Add coordinate data
     theme_bw() + # Change the plot theme
-    ggtitle("Moving track of yamada in 2021") + # Give the plot a title
+    ggtitle("EEZ Joint regime area Japan / Korea") + # Give the plot a title
     xlab("Longitude") + # Change x axis title
     ylab("Latitude") # Change y axis title
 ggplotly()
 ```
 
-### Example 4
+### Example 5
 
 For this region "kr", we would like to see where these vessels come
 from. With `kr_raster`, which is the raster for kr we previously
@@ -423,7 +463,7 @@ plot_ly(flag_summary,
              insidetextorientation = 'radial')
 ```
 
-### Example 5
+### Example 6
 
 Similar with previous example, we can see the gear distribution for
 vessels in kr.
@@ -446,10 +486,6 @@ plot_ly(gear_summary,
 
 TODO: For a EEZ, number of vessel/fishing event w.r.t. months.
 We can see how seasons affect fishing in korea/japan region
-```{r}
-
-```
-
 ```{r}
 
 ```
