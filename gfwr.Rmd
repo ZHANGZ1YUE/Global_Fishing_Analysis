@@ -518,4 +518,9 @@ ggplotly()
 
 The 01 means we regard the date for all appearance in a month as the first day of the month(because we are interested in monthly data. If you want to see daily data, you can modify `temporal_resolution = 'monthly'` and change `monthly` to `daily`)
 
+```{r}
+library(wordcloud)
+wordcloud(words = "xxx", 10)
+
+```
 
