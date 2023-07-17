@@ -2,7 +2,8 @@
 title: "Use Global Fishing Watch API to collect and use fishing data"
 author: "Christophe Bontemps, Ziyue Zhang, GFW Documentation"
 date: "2023-05-15"
-output: html_document
+output: pdf_document
+always_allow_html: yes
 editor_options: 
   markdown: 
     wrap: 72
@@ -487,6 +488,7 @@ plot_ly(gear_summary,
 
 TODO: For a EEZ, number of vessel/fishing event w.r.t. months.
 We can see how seasons affect fishing in korea/japan region
+
 ### Example 7
 ```{r}
 kr_raster_monthly <- get_raster(spatial_resolution = 'low',
